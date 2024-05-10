@@ -93,6 +93,9 @@ export default class ChannelMentionProvider extends Provider {
         this.resetRequest();
 
         const captured = (/\B(~([^~\r\n]*))$/i).exec(pretext.toLowerCase());
+        
+        // const captured = (/[^~\r\n]+(~[^~\r\n]*)?$/).exec(pretext.toLowerCase());
+        // console.log("🚀 ~ ChannelMentionProvider ~ handlePretextChanged ~ captured:", captured)
 
         if (!captured) {
             // Not a channel mention
@@ -124,6 +127,11 @@ export default class ChannelMentionProvider extends Provider {
 
         if (this.lastCompletedWord && captured[0].startsWith(this.lastCompletedWord)) {
             // It appears we're still matching a channel handle that we already completed
+            return false;
+        }
+
+        if (/^[^\s]+~$/.test(pretext.toLowerCase())) {
+            console.log("🚀 ~ ChannelMentionProvider ~ handlePretextChanged ~ pretext:", false)
             return false;
         }
 
